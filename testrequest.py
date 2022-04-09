@@ -19,9 +19,9 @@ payload = {
     "action":"diagnose",
     "data":{
         'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 
-        'implicit_inform_slots': {'Fever':False}
+        'implicit_inform_slots': {'Fever':False,'Diplopia':True}
     },
-    "num":1
+    "num":2
 }
 response = requests.post('http://localhost:8080/backend/diagnose',json=payload)
 print(response)

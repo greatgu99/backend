@@ -1,0 +1,1 @@
+{'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever': False, 'Diplopia': True}, 'disease_tag': 'Esophagitis'}

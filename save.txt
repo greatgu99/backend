@@ -1,0 +1,5 @@
+INFO:root:1   symptom@@@Fever
+INFO:root:1   symptom@@@Diplopia
+INFO:root:1   symptom@@@Breast tenderness
+INFO:root:1   symptom@@@Stomach ache
+INFO:root:1   disease@@@Conjunctivitis
