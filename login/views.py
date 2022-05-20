@@ -6,6 +6,8 @@ from django.http import JsonResponse
 import json
 from django.forms.models import model_to_dict
 from .models import User
+import jwt
+import time
 def loginUser(request):
     data = request.params['data']
     UserAccount = data['username']
@@ -17,7 +19,8 @@ def loginUser(request):
         return JsonResponse({'result':False})
     else:
         if (res['UserPassword'] == UserPassword):
-            return JsonResponse({'result':True,'token':UserAccount})
+            token = jwt.encode({'username':UserAccount,'date':time.time()}, 'secret', algorithm='HS256')
+            return JsonResponse({'result':True,'token':token})
         else:
             return JsonResponse({'result':False})
 

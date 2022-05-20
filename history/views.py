@@ -5,22 +5,31 @@ import json
 from .models import History
 from login.models import User
 from django.forms.models import model_to_dict
-
+import jwt
+import time
 def gethistory(request):
     token = request.params['token']
     try:
-        user = User.objects.get(UserAccount=token)
+        token =  jwt.decode(token, "secret", algorithms="HS256")
     except BaseException:
-        return JsonResponse({'ret':1})
+        return JsonResponse({'ret':-7})
     else:
-        res = []
-        historylist = History.objects.filter(user=user)
-        for i in range(len(historylist)):
-            res.append(model_to_dict(historylist[i]))
-            res[i]['explicit_symptom'] = eval(res[i]['explicit_symptom'])
-            res[i]['implicit_symptom'] = eval(res[i]['implicit_symptom'])
-            res[i]['date'] = str(localtime(historylist[i].date))
-        return JsonResponse({'ret':0,'data':res})
+        if (time.time()-int(token['date'])>3600000):
+            return JsonResponse({'ret':-7})
+        token = token['username']
+        try:
+            user = User.objects.get(UserAccount=token)
+        except BaseException:
+            return JsonResponse({'ret':1})
+        else:
+            res = []
+            historylist = History.objects.filter(user=user)
+            for i in range(len(historylist)):
+                res.append(model_to_dict(historylist[i]))
+                res[i]['explicit_symptom'] = eval(res[i]['explicit_symptom'])
+                res[i]['implicit_symptom'] = eval(res[i]['implicit_symptom'])
+                res[i]['date'] = str(localtime(historylist[i].date))
+            return JsonResponse({'ret':0,'data':res})
 
 def addhistory(request):
     data = request.params['data']
@@ -28,18 +37,25 @@ def addhistory(request):
     implicit_symptom = data['implicit_inform_slot']
     disease_tag = data['disease_tag']
     token = request.params['token']
-    try: 
-        user = User.objects.get(UserAccount=token)
+    try:
+        token =  jwt.decode(token, "secret", algorithms="HS256")
     except BaseException:
-        return JsonResponse({'ret': 1})
+        return JsonResponse({'ret':-7})
     else:
-        history = History()
-        history.user = user
-        history.explicit_symptom = str(explicit_symptom)
-        history.implicit_symptom = str(implicit_symptom)
-        history.disease_tag = disease_tag
-        history.save()
-        return JsonResponse({'ret': 0})
+        if (time.time()-int(token['date'])>3600000):
+            return JsonResponse({'ret':-7})
+        try: 
+            user = User.objects.get(UserAccount=token)
+        except BaseException:
+            return JsonResponse({'ret': 1})
+        else:
+            history = History()
+            history.user = user
+            history.explicit_symptom = str(explicit_symptom)
+            history.implicit_symptom = str(implicit_symptom)
+            history.disease_tag = disease_tag
+            history.save()
+            return JsonResponse({'ret': 0})
 
 def dispatcher(request):
     if request.method == 'GET':
