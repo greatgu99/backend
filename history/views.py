@@ -44,6 +44,7 @@ def addhistory(request):
     else:
         if (time.time()-int(token['date'])>3600000):
             return JsonResponse({'ret':-7})
+        token = token['username']
         try: 
             user = User.objects.get(UserAccount=token)
         except BaseException:
