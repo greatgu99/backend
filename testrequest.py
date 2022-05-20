@@ -16,18 +16,23 @@ import  requests,pprint
 #
 #
 payload = {
-    "action":"diagnose",
+    "action":"addhistory",
     "data":{
-        'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 
-        'implicit_inform_slots': {'Fever':False,'Diplopia':True}
+        'explicit_inform_slot': {'abc':True,'def':False},
+        'implicit_inform_slot': {'dfg':True,'sdf':False},
+        'disease_tag':'oo123'
     },
-    "num":2
+    "token":"greatgu"
 }
-response = requests.post('http://localhost:8080/backend/diagnose',json=payload)
-print(response)
+
+payload = {
+    "action":"gethistory",
+    "token":"greatgu"
+}
+response = requests.post('http://localhost:8080/api/backend/history',json=payload)
+print(response.json()['data'][0]['explicit_symptom']['abc'])
 
 
-pprint.pprint(response.json())
 
 # from pathlib import Path
 # import os

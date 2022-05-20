@@ -22,4 +22,6 @@ urlpatterns = [
     path('api/backend/diagnose',include('diagnose.urls')),
     path('api/backend/disease',include('disease.urls')),
     path('api/backend/symptom',include('symptom.urls')),
+    path('api/backend/login',include('login.urls')),
+    path('api/backend/history',include('history.urls')),
 ]
