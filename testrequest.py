@@ -30,7 +30,7 @@ payload = {
     "token":"greatgu"
 }
 response = requests.post('http://localhost:8080/api/backend/history',json=payload)
-print(response.json()['data'][0]['explicit_symptom']['abc'])
+print(response.json()['data'][0])
 
 
 

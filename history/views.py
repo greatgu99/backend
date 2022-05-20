@@ -1,3 +1,4 @@
+from email.utils import localtime
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
@@ -18,6 +19,7 @@ def gethistory(request):
             res.append(model_to_dict(historylist[i]))
             res[i]['explicit_symptom'] = eval(res[i]['explicit_symptom'])
             res[i]['implicit_symptom'] = eval(res[i]['implicit_symptom'])
+            res[i]['date'] = str(localtime(historylist[i].date))
         return JsonResponse({'ret':0,'data':res})
 
 def addhistory(request):
